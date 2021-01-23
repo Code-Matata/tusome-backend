@@ -13,10 +13,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class Image {
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  long id;
-  @NonNull
-  @Lob
-  byte[] image;
+    @Id
+    @NonNull
+    long id;
+    @NonNull
+    @Lob
+    byte[] image;
 }

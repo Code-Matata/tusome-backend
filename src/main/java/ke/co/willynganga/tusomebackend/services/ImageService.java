@@ -19,6 +19,10 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
+    public Image getImageById(long id) {
+        return imageRepository.findById(id).orElse(null);
+    }
+
     public String addImage(long id, MultipartFile file) {
         if (file != null) {
             try {

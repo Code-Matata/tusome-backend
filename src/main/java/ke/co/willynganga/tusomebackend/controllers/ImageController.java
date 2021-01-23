@@ -1,10 +1,7 @@
 package ke.co.willynganga.tusomebackend.controllers;
 
 import ke.co.willynganga.tusomebackend.services.ImageService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/images")
@@ -19,5 +16,10 @@ public class ImageController {
     @GetMapping("/getImage/{id}")
     public byte[] getImage(@PathVariable("id") long id) {
         return imageService.getImageById(id).getImage();
+    }
+
+    @DeleteMapping("deleteImage/{id}")
+    public String deleteImage(@PathVariable("id") long id) {
+        return imageService.deleteImage(id);
     }
 }

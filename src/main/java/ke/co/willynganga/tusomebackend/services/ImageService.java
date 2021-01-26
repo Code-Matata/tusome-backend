@@ -40,6 +40,7 @@ public class ImageService {
     public String deleteImage(long id) {
         Optional<Image> image = imageRepository.findById(id);
         image.ifPresent(imageRepository::delete);
+        imageRepository.flush();
         return image.isPresent() ? "Image deleted successfully!" : "Image not found, please provide a valid Id";
     }
 }

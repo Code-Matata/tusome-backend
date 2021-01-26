@@ -14,9 +14,11 @@ import java.util.Optional;
 public class PaperService {
     private Logger logger = LoggerFactory.getLogger(PaperService.class);
     private final PaperRepository paperRepository;
+    private final ImageService imageService;
 
-    public PaperService(PaperRepository paperRepository) {
+    public PaperService(PaperRepository paperRepository, ImageService imageService) {
         this.paperRepository = paperRepository;
+        this.imageService = imageService;
     }
 
     public Paper getPaper(long id) {
@@ -35,6 +37,10 @@ public class PaperService {
         return paperRepository.findPapersByPaperCategory(category);
     }
 
+    public long getItemCount() {
+        return paperRepository.count();
+    }
+
     public List<Paper> getPapersByTitle(String title) {
         return paperRepository.findPapersByTitle(title);
     }
@@ -51,7 +57,11 @@ public class PaperService {
     public String deletePaper(long id) {
         Optional<Paper> paper = paperRepository.findById(id);
         paper.ifPresent(paperRepository::delete);
-
+        if (paper.isPresent()) {
+            String url = paper.get().getImageUrl();
+            long imageId = Long.parseLong(url.substring(45));
+            imageService.deleteImage(imageId);
+        }
         return paper.isPresent() ? "Paper has been deleted successfully!" : "Paper cannot be found!";
     }
 }

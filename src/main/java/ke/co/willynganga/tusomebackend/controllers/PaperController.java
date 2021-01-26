@@ -52,8 +52,14 @@ public class PaperController {
                            @RequestParam("year") int year,
                            @RequestParam("category") Category category) {
         Paper paper = new Paper(title, year, category);
-        imageService.addImage(paper.getId(), image);
-        paper.setImageUrl("http://localhost:8083/api/v1/images/getImage/" + paper.getId());
+        long imageId = paperService.getItemCount() + 1;
+        imageService.addImage(imageId, image);
+        paper.setImageUrl("http://localhost:8083/api/v1/images/getImage/" + imageId);
         return paperService.addPaper(paper);
+    }
+
+    @DeleteMapping("/deletePaper/{id}")
+    public String deletePaper(@PathVariable("id") long id) {
+        return paperService.deletePaper(id);
     }
 }

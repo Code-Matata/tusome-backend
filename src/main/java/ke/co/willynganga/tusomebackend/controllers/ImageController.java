@@ -1,5 +1,6 @@
 package ke.co.willynganga.tusomebackend.controllers;
 
+import ke.co.willynganga.tusomebackend.models.Image;
 import ke.co.willynganga.tusomebackend.services.ImageService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,12 @@ public class ImageController {
             produces = MediaType.IMAGE_JPEG_VALUE
     )
     public byte[] getImage(@PathVariable("id") long id) {
-        return imageService.getImageById(id).getImage();
+        Image image = imageService.getImageById(id);
+        if (image != null) {
+            return image.getImage();
+        } else {
+            return null;
+        }
     }
 
     @DeleteMapping("deleteImage/{id}")

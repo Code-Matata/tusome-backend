@@ -57,11 +57,10 @@ public class PaperService {
     public String deletePaper(long id) {
         Optional<Paper> paper = paperRepository.findById(id);
         paper.ifPresent(paperRepository::delete);
-        if (paper.isPresent()) {
-            String url = paper.get().getImageUrl();
-            long imageId = Long.parseLong(url.substring(45));
-            imageService.deleteImage(imageId);
-        }
+        paper.ifPresent(value -> value.getImageUrls().stream()
+                .map(imageUrl -> imageUrl.getUrl().substring(45))
+                .map(Long::parseLong)
+                .forEach(imageService::deleteImage));
         return paper.isPresent() ? "Paper has been deleted successfully!" : "Paper cannot be found!";
     }
 }

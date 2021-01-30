@@ -23,18 +23,19 @@ public class ImageService {
         return imageRepository.findById(id).orElse(null);
     }
 
-    public boolean addImage(long id, MultipartFile file) {
+    public Image addImage(MultipartFile file) {
         if (file != null) {
             try {
                 byte[] imageBytes = file.getBytes();
-                imageRepository.save(new Image(id, imageBytes));
+                Image image = new Image(imageBytes);
+                imageRepository.save(image);
                 imageRepository.flush();
-                return true;
+                return image;
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }
         }
-        return false;
+        return null;
     }
 
     public String deleteImage(long id) {

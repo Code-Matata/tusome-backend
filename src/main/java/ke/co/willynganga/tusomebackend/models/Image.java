@@ -8,15 +8,15 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity(name = "images_table")
+@Entity(name = "images")
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class Image {
     @Id
-    @NonNull
-    long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     @NonNull
     @Lob
-    byte[] image;
+    private byte[] image;
 }

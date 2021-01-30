@@ -1,20 +1,17 @@
 package ke.co.willynganga.tusomebackend.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import ke.co.willynganga.tusomebackend.other.Category;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
-@Entity(name = "papers_table")
+@Entity(name = "papers")
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
+@EqualsAndHashCode(exclude = {"imageUrls"})
 public class Paper {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,5 +19,9 @@ public class Paper {
     @NonNull String title;
     @NonNull int year;
     @NonNull Category paperCategory;
-    String imageUrl;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "paper",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    Set<ImageUrl> imageUrls;
 }

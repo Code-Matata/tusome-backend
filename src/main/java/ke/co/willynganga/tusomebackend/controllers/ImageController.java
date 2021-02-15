@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/images")
+@CrossOrigin
 public class ImageController {
 
     private final ImageService imageService;

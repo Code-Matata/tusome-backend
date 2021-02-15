@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/papers")
+@CrossOrigin
 public class PaperController {
 
     private final ImageService imageService;

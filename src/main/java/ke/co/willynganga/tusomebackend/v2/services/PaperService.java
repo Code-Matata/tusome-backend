@@ -1,10 +1,9 @@
-package ke.co.willynganga.tusomebackend.services;
+package ke.co.willynganga.tusomebackend.v2.services;
 
-import ke.co.willynganga.tusomebackend.models.Paper;
-import ke.co.willynganga.tusomebackend.other.Category;
-import ke.co.willynganga.tusomebackend.repositories.PaperRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ke.co.willynganga.tusomebackend.v2.models.Paper;
+import ke.co.willynganga.tusomebackend.v2.other.Category;
+import ke.co.willynganga.tusomebackend.v2.other.CourseType;
+import ke.co.willynganga.tusomebackend.v2.repository.PaperRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,13 +11,10 @@ import java.util.Optional;
 
 @Service
 public class PaperService {
-    private Logger logger = LoggerFactory.getLogger(PaperService.class);
     private final PaperRepository paperRepository;
-    private final ImageService imageService;
 
-    public PaperService(PaperRepository paperRepository, ImageService imageService) {
+    public PaperService(PaperRepository paperRepository) {
         this.paperRepository = paperRepository;
-        this.imageService = imageService;
     }
 
     public Paper getPaper(long id) {
@@ -37,12 +33,16 @@ public class PaperService {
         return paperRepository.findPapersByPaperCategory(category);
     }
 
+    public List<Paper> getPaperByCourseType(CourseType courseType) {
+        return paperRepository.findPaperByCourseType(courseType);
+    }
+
     public long getItemCount() {
         return paperRepository.count();
     }
 
     public List<Paper> getPapersByTitle(String title) {
-        return paperRepository.findPapersByTitle(title);
+        return null;
     }
 
     public String addPaper(Paper paper) {
@@ -57,10 +57,6 @@ public class PaperService {
     public String deletePaper(long id) {
         Optional<Paper> paper = paperRepository.findById(id);
         paper.ifPresent(paperRepository::delete);
-        paper.ifPresent(value -> value.getImageUrls().stream()
-                .map(imageUrl -> imageUrl.getUrl().substring(45))
-                .map(Long::parseLong)
-                .forEach(imageService::deleteImage));
         return paper.isPresent() ? "Paper has been deleted successfully!" : "Paper cannot be found!";
     }
 }

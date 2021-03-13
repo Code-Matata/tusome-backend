@@ -1,5 +1,4 @@
-package ke.co.willynganga.tusomebackend.models;
-
+package ke.co.willynganga.tusomebackend.v2.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,15 +7,16 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity(name = "images")
+@Entity
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class Image {
+public class ExamFile {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NonNull
     @Lob
-    private byte[] image;
+    @NonNull
+    private byte[] data;
 }

@@ -2,16 +2,16 @@ package ke.co.willynganga.tusomebackend.repositories;
 
 import ke.co.willynganga.tusomebackend.models.Paper;
 import ke.co.willynganga.tusomebackend.other.Category;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface PaperRepository extends JpaRepository<Paper, Long> {
 
-    List<Paper> findPapersByYear(int year);
+    Page<Paper> findPapersByYear(int year, Pageable pageable);
 
-    List<Paper> findPapersByPaperCategory(Category category);
+    Page<Paper> findPapersByPaperCategory(Category category, Pageable pageable);
 
-    List<Paper> findPapersByTitle(String title);
+    Page<Paper> findPapersByTitle(String title, Pageable pageable);
 
 }

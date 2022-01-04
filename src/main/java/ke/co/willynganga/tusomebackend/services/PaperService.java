@@ -1,10 +1,13 @@
 package ke.co.willynganga.tusomebackend.services;
 
 import ke.co.willynganga.tusomebackend.models.Paper;
+import ke.co.willynganga.tusomebackend.models.PaperDTO;
 import ke.co.willynganga.tusomebackend.other.Category;
 import ke.co.willynganga.tusomebackend.repositories.PaperRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +15,7 @@ import java.util.Optional;
 
 @Service
 public class PaperService {
-    private Logger logger = LoggerFactory.getLogger(PaperService.class);
+    private final Logger logger = LoggerFactory.getLogger(PaperService.class);
     private final PaperRepository paperRepository;
     private final ImageService imageService;
 
@@ -29,12 +32,39 @@ public class PaperService {
         return paperRepository.findAll();
     }
 
+    public PaperDTO getPagedPapers(Pageable pageable) {
+        Page<Paper> page = paperRepository.findAll(pageable);
+        return PaperDTO.builder()
+                .pages(page.getTotalPages())
+                .currentPage(page.getNumber())
+                .papers(page.getContent())
+                .build();
+    }
+
     public List<Paper> getPapersByYear(int year) {
-        return paperRepository.findPapersByYear(year);
+        return paperRepository.findPapersByYear(year, null).getContent();
+    }
+
+    public PaperDTO getPagedPapersByYear(int year, Pageable pageable) {
+        Page<Paper> page = paperRepository.findPapersByYear(year, null);
+        return PaperDTO.builder()
+                .pages(page.getTotalPages())
+                .currentPage(page.getNumber())
+                .papers(page.getContent())
+                .build();
     }
 
     public List<Paper> getPapersByCategory(Category category) {
-        return paperRepository.findPapersByPaperCategory(category);
+        return paperRepository.findPapersByPaperCategory(category, null).getContent();
+    }
+
+    public PaperDTO getPagedPapersByCategory(Category category, Pageable pageable) {
+        Page<Paper> page = paperRepository.findPapersByPaperCategory(category, null);
+        return PaperDTO.builder()
+                .papers(page.getContent())
+                .currentPage(page.getNumber())
+                .papers(page.getContent())
+                .build();
     }
 
     public long getItemCount() {
@@ -42,7 +72,16 @@ public class PaperService {
     }
 
     public List<Paper> getPapersByTitle(String title) {
-        return paperRepository.findPapersByTitle(title);
+        return paperRepository.findPapersByTitle(title, null).getContent();
+    }
+
+    public PaperDTO getPagedPapersByTitle(String title, Pageable pageable) {
+        Page<Paper> page = paperRepository.findPapersByTitle(title, null);
+        return PaperDTO.builder()
+                .papers(page.getContent())
+                .currentPage(page.getNumber())
+                .papers(page.getContent())
+                .build();
     }
 
     public String addPaper(Paper paper) {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -127,12 +128,12 @@ public class PaperController {
                            @RequestParam("category") Category category) {
         Paper paper = new Paper(title, year, category);
         String response = paperService.addPaper(paper);
-        long imageId = paperService.getItemCount() + 1;
-        for (MultipartFile image: images) {
-            Image temp = imageService.addImage(image);
-            urlService.addUrl("http://localhost:8083/api/v1/images/getImage/" + temp.getId(), paper);
-        }
+        Arrays.stream(images).forEach(image -> saveImage(image, paper));
         return response;
+    }
+
+    private void saveImage(MultipartFile image, Paper paper) {
+        urlService.addUrl("https://tusome-app.herokuapp.com/api/v1/images/getImage" + imageService.addImage(image).getId(), paper);
     }
 
     @ApiIgnore

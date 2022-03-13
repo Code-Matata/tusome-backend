@@ -133,7 +133,7 @@ public class PaperController {
     }
 
     private void saveImage(MultipartFile image, Paper paper) {
-        urlService.addUrl("https://tusome-app.herokuapp.com/api/v1/images/getImage" + imageService.addImage(image).getId(), paper);
+        urlService.addUrl("https://tusome-app.herokuapp.com/api/v1/images/getImage/" + imageService.addImage(image).getId(), paper);
     }
 
     @ApiIgnore
